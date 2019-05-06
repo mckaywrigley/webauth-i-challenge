@@ -18,7 +18,13 @@ router.post("/register", (req, res) => {
     });
 });
 
-router.post("/login", (req, res) => {});
+router.post("/login", (req, res) => {
+  let credentials = req.body;
+  if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
+    return res.status(401).json({ error: "Incorrect credentials." });
+  }
+  return res.status(200).json({ success: "Correct credentials." });
+});
 
 router.get("/users", (req, res) => {});
 
