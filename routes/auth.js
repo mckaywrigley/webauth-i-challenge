@@ -19,13 +19,28 @@ router.post("/register", (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  let credentials = req.body;
-  if (!user || !bcrypt.compareSync(credentials.password, user.password)) {
-    return res.status(401).json({ error: "Incorrect credentials." });
-  }
-  return res.status(200).json({ success: "Correct credentials." });
+  const { username, password } = req.body;
+  Users.findBy({ username })
+    .then(user => {
+      console.log(user);
+      if (!user || !bcrypt.compareSync(password, user.password)) {
+        return res.status(401).json({ error: "Incorrect credentials" });
+      }
+      return res.status(200).json(user);
+    })
+    .catch(err => {
+      return res.status(500).json({ error: "Error while logging in." });
+    });
 });
 
-router.get("/users", (req, res) => {});
+router.get("/users", (req, res) => {
+  Users.find()
+    .then(users => {
+      return res.status(200).json(users);
+    })
+    .catch(err => {
+      return res.status(500).json({ error: "Could not retrieve users." });
+    });
+});
 
 module.exports = router;

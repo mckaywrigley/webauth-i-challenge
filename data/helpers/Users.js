@@ -3,7 +3,8 @@ const db = require("../dbConfig");
 module.exports = {
   create,
   find,
-  findById
+  findById,
+  findBy
 };
 
 function create(user) {
@@ -11,7 +12,13 @@ function create(user) {
 }
 
 function find() {
-  return db("users").select("id", "username");
+  return db("users");
+}
+
+function findBy(param) {
+  return db("users")
+    .where(param)
+    .first();
 }
 
 function findById(id) {
