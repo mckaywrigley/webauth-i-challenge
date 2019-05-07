@@ -23,7 +23,6 @@ router.post("/login", (req, res) => {
   const { username, password } = req.body;
   Users.findBy({ username })
     .then(user => {
-      console.log(user);
       if (!user || !bcrypt.compareSync(password, user.password)) {
         return res.status(401).json({ error: "Incorrect credentials" });
       }
