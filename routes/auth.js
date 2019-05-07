@@ -26,7 +26,8 @@ router.post("/login", (req, res) => {
       if (!user || !bcrypt.compareSync(password, user.password)) {
         return res.status(401).json({ error: "Incorrect credentials" });
       }
-      return res.status(200).json(user);
+      req.session.user = user;
+      return res.status(200).json({ message: `Hello ${user.username}!` });
     })
     .catch(err => {
       return res.status(500).json({ error: "Error while logging in." });
