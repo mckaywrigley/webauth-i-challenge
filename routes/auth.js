@@ -45,4 +45,11 @@ router.get("/users", restricted, (req, res) => {
     });
 });
 
+router.get("/logout", (req, res) => {
+  if (req.session) {
+    return req.session.destroy();
+  }
+  return res.status(500).json({ error: "Could not logout the user." });
+});
+
 module.exports = router;
